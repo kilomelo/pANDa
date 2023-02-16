@@ -7,18 +7,12 @@
     android:layout_gravity="center"
     tools:context=".MainActivity">
 
-<!--    <com.hjq.bar.TitleBar-->
-<!--        android:id="@+id/tb_main_bar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:leftIcon="@null"-->
-<!--        app:title="@string/app_name" />-->
+    <com.hjq.bar.TitleBar
+        android:id="@+id/tb_main_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftIcon="@null"
+        app:title="@string/app_name" />
 
-<!--    <FrameLayout-->
-<!--        android:id="@+id/fm"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="bottom|end"-->
-<!--        android:background="#00000000" />-->
 
 </LinearLayout>

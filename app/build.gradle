@@ -29,6 +29,16 @@ android {
 }
 
 dependencies {
+    implementation 'com.github.kilomelo:android_tools:0.0.1'
+    // 权限请求框架：https://github.com/getActivity/XXPermissions
+    implementation 'com.github.getActivity:XXPermissions:16.6'
+    // 标题栏框架：https://github.com/getActivity/TitleBar
+    implementation 'com.github.getActivity:TitleBar:10.0'
+    // 吐司框架：https://github.com/getActivity/ToastUtils
+    implementation 'com.github.getActivity:ToastUtils:11.2'
+    // 内存泄漏捕捉：https://github.com/square/leakcanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'

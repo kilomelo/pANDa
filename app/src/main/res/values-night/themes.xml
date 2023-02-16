@@ -1,16 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.PANDa" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.PANDa" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
-        <item name="colorOnPrimary">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/colorPrimaryDark</item>
+        <item name="colorSecondary">@color/colorPrimary</item>
         <item name="colorSecondaryVariant">@color/colorPrimaryDark</item>
-        <item name="colorOnSecondary">@color/colorPrimaryDark</item>
+        <item name="colorOnSecondary">@color/colorOnPrimary</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <!-- 解决 Android 5.1 及以上版本 Button 英文字符串自动变大写的问题 -->
+        <item name="android:textAllCaps">false</item>
     </style>
 </resources>
