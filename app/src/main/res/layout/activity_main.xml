@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <com.hjq.bar.TitleBar
@@ -13,6 +14,14 @@
         android:layout_height="wrap_content"
         app:leftIcon="@null"
         app:title="@string/app_name" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="pANDa Window" />
 
 
 </LinearLayout>

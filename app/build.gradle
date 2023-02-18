@@ -36,6 +36,8 @@ dependencies {
     implementation 'com.github.getActivity:TitleBar:10.0'
     // 吐司框架：https://github.com/getActivity/ToastUtils
     implementation 'com.github.getActivity:ToastUtils:11.2'
+    // 悬浮窗框架 https://github.com/getActivity/XToast
+    implementation 'com.github.getActivity:XToast:8.9'
     // 内存泄漏捕捉：https://github.com/square/leakcanary
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 

@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:text="点我关闭"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorOnPrimary"
         android:textSize="14sp" />
 
     <EditText
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="请输入你的名字"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorOnPrimary"
         android:textColorHint="#999999"
         android:textSize="14sp" />
 
