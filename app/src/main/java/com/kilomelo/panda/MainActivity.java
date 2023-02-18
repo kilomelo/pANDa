@@ -2,6 +2,8 @@ package com.kilomelo.panda;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TitleBar titleBar = findViewById(R.id.tb_main_bar);
+        Context context = this;
         titleBar.setOnTitleBarListener(new OnTitleBarListener() {
             @Override public void onTitleClick(TitleBar titleBar) {
             LogTool.logMethod();
