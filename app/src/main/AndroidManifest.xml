@@ -29,7 +29,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/Theme.PANDa"
             android:exported="false"
             android:screenOrientation="portrait">
 <!--            <intent-filter>-->

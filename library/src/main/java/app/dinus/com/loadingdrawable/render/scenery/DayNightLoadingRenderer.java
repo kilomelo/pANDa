@@ -69,7 +69,7 @@ public class DayNightLoadingRenderer extends LoadingRenderer {
     private static final float STAR_RISE_START_DURATION_OFFSET = 0.684f;
     private static final float STAR_DECREASE_START_DURATION_OFFSET = 1.0f;
 
-    private static final int DEFAULT_COLOR = Color.parseColor("#FFFFFFFF");
+    private static final int DEFAULT_COLOR = Color.parseColor("#FFFFFF");
 
     private static final long ANIMATION_DURATION = 5111;
 
