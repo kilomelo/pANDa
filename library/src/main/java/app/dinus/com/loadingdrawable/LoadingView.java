@@ -3,6 +3,7 @@ package app.dinus.com.loadingdrawable;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -39,6 +40,12 @@ public class LoadingView extends ImageView {
         setImageDrawable(mLoadingDrawable);
     }
 
+    public LoadingRenderer getLoadingRenderer()
+    {
+        if (null == mLoadingDrawable) return null;
+        return mLoadingDrawable.getLoadingRenderer();
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -54,7 +61,6 @@ public class LoadingView extends ImageView {
     @Override
     protected void onVisibilityChanged(View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
-
         final boolean visible = visibility == VISIBLE && getVisibility() == VISIBLE;
         if (visible) {
             startAnimation();

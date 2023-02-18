@@ -15,9 +15,11 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.OvershootInterpolator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,8 @@ public class DayNightLoadingRenderer extends LoadingRenderer {
     private static final Interpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
     private static final Interpolator ACCELERATE_INTERPOLATOR = new AccelerateInterpolator();
     private static final Interpolator FASTOUTLINEARIN_INTERPOLATOR = new FastOutLinearInInterpolator();
+    private static final Interpolator OVERSHOOT_INTERPOLATOR = new OvershootInterpolator();
+    private static final Interpolator ANTICIPATE_OVERSHOOT_INTERPOLATOR = new AnticipateOvershootInterpolator();
 
     private static final Interpolator[] INTERPOLATORS = new Interpolator[]{LINEAR_INTERPOLATOR,
             DECELERATE_INTERPOLATOR, ACCELERATE_INTERPOLATOR, FASTOUTLINEARIN_INTERPOLATOR, MATERIAL_INTERPOLATOR};
@@ -41,9 +45,9 @@ public class DayNightLoadingRenderer extends LoadingRenderer {
     private static final int MAX_SUN_RAY_COUNT = 12;
 
     private static final float DEFAULT_WIDTH = 200.0f;
-    private static final float DEFAULT_HEIGHT = 150.0f;
+    private static final float DEFAULT_HEIGHT = 350.0f;
     private static final float DEFAULT_STROKE_WIDTH = 2.5f;
-    private static final float DEFAULT_SUN$MOON_RADIUS = 12.0f;
+    private static final float DEFAULT_SUN$MOON_RADIUS = 15.0f;
     private static final float DEFAULT_STAR_RADIUS = 2.5f;
     private static final float DEFAULT_SUN_RAY_LENGTH = 10.0f;
     private static final float DEFAULT_SUN_RAY_OFFSET = 3.0f;
@@ -65,7 +69,7 @@ public class DayNightLoadingRenderer extends LoadingRenderer {
     private static final float STAR_RISE_START_DURATION_OFFSET = 0.684f;
     private static final float STAR_DECREASE_START_DURATION_OFFSET = 1.0f;
 
-    private static final int DEFAULT_COLOR = Color.parseColor("#ff21fd8e");
+    private static final int DEFAULT_COLOR = Color.parseColor("#FFFFFFFF");
 
     private static final long ANIMATION_DURATION = 5111;
 
@@ -204,7 +208,7 @@ public class DayNightLoadingRenderer extends LoadingRenderer {
     protected void computeRender(float renderProgress) {
         if (renderProgress <= SUN_RISE_DURATION_OFFSET) {
             float sunRiseProgress = renderProgress / SUN_RISE_DURATION_OFFSET;
-            mSunCoordinateY = mInitSun$MoonCoordinateY - mMaxSun$MoonRiseDistance * MATERIAL_INTERPOLATOR.getInterpolation(sunRiseProgress);
+            mSunCoordinateY = mInitSun$MoonCoordinateY - mMaxSun$MoonRiseDistance * OVERSHOOT_INTERPOLATOR.getInterpolation(sunRiseProgress);
             mMoonCoordinateY = mInitSun$MoonCoordinateY;
             mShowStar = false;
         }
@@ -233,7 +237,7 @@ public class DayNightLoadingRenderer extends LoadingRenderer {
             float moonRiseProgress = (renderProgress - SUN_DECREASE_DURATION_OFFSET) / (MOON_RISE_DURATION_OFFSET - SUN_DECREASE_DURATION_OFFSET);
             mMoonRotation = MATERIAL_INTERPOLATOR.getInterpolation(moonRiseProgress) * MAX_MOON_ROTATE_DEGREE;
             mSunCoordinateY = mInitSun$MoonCoordinateY;
-            mMoonCoordinateY = mInitSun$MoonCoordinateY - mMaxSun$MoonRiseDistance * MATERIAL_INTERPOLATOR.getInterpolation(moonRiseProgress);
+            mMoonCoordinateY = mInitSun$MoonCoordinateY - mMaxSun$MoonRiseDistance * OVERSHOOT_INTERPOLATOR.getInterpolation(moonRiseProgress);
         }
 
         if (renderProgress <= STAR_DECREASE_START_DURATION_OFFSET && renderProgress > STAR_RISE_START_DURATION_OFFSET) {
@@ -298,7 +302,7 @@ public class DayNightLoadingRenderer extends LoadingRenderer {
         mStarHolders.add(new StarHolder(0.5f, new PointF(currentBounds.left + currentBounds.width() * 0.4075f,
                 currentBounds.top + currentBounds.height() * 0.0934f)));
         mStarHolders.add(new StarHolder(new PointF(currentBounds.left + currentBounds.width() * 0.825f,
-                currentBounds.top + currentBounds.height() * 0.04f)));
+                currentBounds.top + currentBounds.height() * 0.1f)));
         mStarHolders.add(new StarHolder(new PointF(currentBounds.left + currentBounds.width() * 0.7075f,
                 currentBounds.top + currentBounds.height() * 0.147f)));
         mStarHolders.add(new StarHolder(new PointF(currentBounds.left + currentBounds.width() * 0.3475f,
@@ -308,7 +312,7 @@ public class DayNightLoadingRenderer extends LoadingRenderer {
         mStarHolders.add(new StarHolder(new PointF(currentBounds.left + currentBounds.width() * 0.84f,
                 currentBounds.top + currentBounds.height() * 0.32f)));
         mStarHolders.add(new StarHolder(new PointF(currentBounds.left + currentBounds.width() * 0.8f,
-                currentBounds.top + currentBounds.height() / 0.502f)));
+                currentBounds.top + currentBounds.height() * 0.652f)));
         mStarHolders.add(new StarHolder(0.6f, new PointF(currentBounds.left + currentBounds.width() * 0.7f,
                 currentBounds.top + currentBounds.height() * 0.473f)));
 
@@ -342,6 +346,7 @@ public class DayNightLoadingRenderer extends LoadingRenderer {
             this.mPoint = mPoint;
             this.mFlashOffset = flashOffset;
             this.mInterpolator = INTERPOLATORS[mRandom.nextInt(INTERPOLATORS.length)];
+//            this.mInterpolator = LINEAR_INTERPOLATOR;
         }
     }
 

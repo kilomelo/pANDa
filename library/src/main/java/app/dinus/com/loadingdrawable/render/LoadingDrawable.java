@@ -6,6 +6,9 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
+
+import java.util.function.Function;
 
 import app.dinus.com.loadingdrawable.render.LoadingRenderer;
 
@@ -33,6 +36,12 @@ public class LoadingDrawable extends Drawable implements Animatable {
         this.mLoadingRender = loadingRender;
         this.mLoadingRender.setCallback(mCallback);
     }
+
+    public LoadingRenderer getLoadingRenderer()
+    {
+        return mLoadingRender;
+    }
+
 
     @Override
     protected void onBoundsChange(Rect bounds) {

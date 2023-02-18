@@ -1,6 +1,7 @@
 package app.dinus.com.loadingdrawable.render;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,6 +14,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+
+import java.util.function.Function;
 
 import app.dinus.com.loadingdrawable.DensityUtil;
 
@@ -29,6 +32,15 @@ public abstract class LoadingRenderer {
         }
     };
 
+    private final Animator.AnimatorListener mAnimatorListener = new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            Log.d("TempDebug", "anim end");
+            if (null != mOnComplete) mOnComplete.apply(null);
+        }
+    };
+
     /**
      * Whenever {@link LoadingDrawable} boundary changes mBounds will be updated.
      * More details you can see {@link LoadingDrawable#onBoundsChange(Rect)}
@@ -39,13 +51,21 @@ public abstract class LoadingRenderer {
     private ValueAnimator mRenderAnimator;
 
     protected long mDuration;
+    protected boolean mLoop;
 
     protected float mWidth;
     protected float mHeight;
 
+    private Function mOnComplete;
+
     public LoadingRenderer(Context context) {
         initParams(context);
         setupAnimators();
+    }
+
+    public void setCompleteCallback(Function callback)
+    {
+        mOnComplete = callback;
     }
 
     @Deprecated
@@ -69,23 +89,15 @@ public abstract class LoadingRenderer {
     }
 
     void start() {
-        reset();
-        mRenderAnimator.addUpdateListener(mAnimatorUpdateListener);
-
-        mRenderAnimator.setRepeatCount(ValueAnimator.INFINITE);
         mRenderAnimator.setDuration(mDuration);
         mRenderAnimator.start();
     }
 
     void stop() {
-        // if I just call mRenderAnimator.end(),
-        // it will always call the method onAnimationUpdate(ValueAnimator animation)
-        // why ? if you know why please send email to me (dinus_developer@163.com)
         mRenderAnimator.removeUpdateListener(mAnimatorUpdateListener);
-
-        mRenderAnimator.setRepeatCount(0);
-        mRenderAnimator.setDuration(0);
+        mRenderAnimator.removeListener(mAnimatorListener);
         mRenderAnimator.end();
+//        mRenderAnimator.cancel();
     }
 
     boolean isRunning() {
@@ -109,12 +121,12 @@ public abstract class LoadingRenderer {
 
     private void setupAnimators() {
         mRenderAnimator = ValueAnimator.ofFloat(0.0f, 1.0f);
-        mRenderAnimator.setRepeatCount(Animation.INFINITE);
-        mRenderAnimator.setRepeatMode(Animation.RESTART);
-        mRenderAnimator.setDuration(mDuration);
-        //fuck you! the default interpolator is AccelerateDecelerateInterpolator
+        mRenderAnimator.setRepeatCount(mLoop ? ValueAnimator.INFINITE : 0);
+        mRenderAnimator.setRepeatMode(ValueAnimator.RESTART);
         mRenderAnimator.setInterpolator(new LinearInterpolator());
         mRenderAnimator.addUpdateListener(mAnimatorUpdateListener);
+        mRenderAnimator.addListener(mAnimatorListener);
+
     }
 
     private void invalidateSelf() {
