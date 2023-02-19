@@ -13,7 +13,6 @@ import com.kilomelo.tools.LogTool;
 public class FloatButton extends XToast {
     private static String TAG = FloatButton.class.getSimpleName();
     private MainActivity mMainActivity;
-    private OperationPanel mOperationPanel;
     enum State
     {
         collapsed,
@@ -44,8 +43,6 @@ public class FloatButton extends XToast {
         mDraggable.deserializeLocation();
         setDraggable(mDraggable);
         mState = State.collapsed;
-
-        mOperationPanel = new OperationPanel(mainActivity.getApplication());
     }
 
     @Override
@@ -64,29 +61,15 @@ public class FloatButton extends XToast {
     @Override
     public void cancel() {
         Log.w(TAG, "do not call cancel on unity floating window, call feeUnity instead");
-        if (null != mOperationPanel) mOperationPanel.cancel();
     }
     //region business
     private void showOperationPanel(boolean show) {
         LogTool.logMethod();
-        if (null == mOperationPanel) {
-            Log.e(TAG, "mOperationPanel is null");
-            return;
-        }
         if (show) {
-            if (mOperationPanel.isShowing()) {
-                Log.w(TAG, "mOperationPanel is showing, can't show again");
-            } else {
-                mOperationPanel.show();
-                mDraggable.mEnableDrag = false;
-            }
+            new OperationPanel(mMainActivity.getApplication()).show();
+            mDraggable.mEnableDrag = false;
         } else {
-            if (!mOperationPanel.isShowing()) {
-                Log.w(TAG, "mOperationPanel is not showing, can't cancel again");
-            } else {
-                mOperationPanel.cancel();
-                mDraggable.mEnableDrag = true;
-            }
+            mDraggable.mEnableDrag = true;
         }
     }
     public void ToggleOperationPanel()
@@ -100,12 +83,7 @@ public class FloatButton extends XToast {
     }
     public void awakeMainWindow()
     {
-        if (mOperationPanel == null)
-        {
-            Log.e(TAG, "mOperationPanel is null");
-            return;
-        }
-        if (!mOperationPanel.isShowing()) mMainActivity.moveToFront();
+        mMainActivity.moveToFront();
     }
     //endregion
 }
