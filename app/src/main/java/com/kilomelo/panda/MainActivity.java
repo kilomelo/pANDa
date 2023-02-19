@@ -6,13 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.hjq.bar.OnTitleBarListener;
 import com.hjq.bar.TitleBar;
@@ -21,8 +18,7 @@ import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.hjq.toast.ToastUtils;
 import com.hjq.xtoast.XToast;
-import com.hjq.xtoast.draggable.SpringDraggable;
-import com.kilomelo.panda.floatwindow.FloatWindow;
+import com.kilomelo.panda.overlay.FloatButton;
 import com.kilomelo.tools.LogTool;
 import com.kilomelo.tools.PersistentData;
 
@@ -31,8 +27,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static String TAG = MainActivity.class.getSimpleName();
 
-    private FloatWindow mFloatWindow;
+    private FloatButton mFloatButton;
     private int mTaskId;
+    private boolean mInForeground;
     // region lifecycle
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         findViewById(R.id.button).setOnClickListener(this);
 
-        mFloatWindow = new FloatWindow(getApplication());
+        mFloatButton = new FloatButton(getApplication());
+        mFloatButton.init(this);
 //        mFloatWindow.setOnClickListener(new XToast.OnClickListener<View>() {
 //            @Override
 //            public void onClick(XToast<?> toast, View view) {
@@ -83,12 +81,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onPause();
         LogTool.logMethod();
+        mInForeground = false;
     }
 
     @Override protected void onResume()
     {
         super.onResume();
         LogTool.logMethod();
+        mInForeground = true;
     }
 
     @Override public void onLowMemory()
@@ -149,11 +149,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void showGlobalWindow(Application app)
     {
         LogTool.logMethod();
-        if (null == mFloatWindow) {
+        if (null == mFloatButton) {
             Log.e(TAG, "mFloatWindow not inited.");
             return;
         }
-        mFloatWindow.show();
+        mFloatButton.show();
         moveToBackground();
 //        new XToast<>(app)
 //                .setContentView(R.layout.window_hint)
@@ -179,8 +179,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                .show();
     }
 
-    protected void moveToFront() {
+    public void moveToFront() {
         LogTool.logMethod();
+        if (mInForeground) return;
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 //        List<ActivityManager.RunningTaskInfo> recentTasks = manager.getRunningTasks(Integer.MAX_VALUE);
 //        for (int i = 0; i < recentTasks.size(); i++) {
@@ -195,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void moveToBackground()
     {
         LogTool.logMethod();
+        if (!mInForeground) return;
         moveTaskToBack(true);
     }
 }

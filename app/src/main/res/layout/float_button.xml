@@ -5,15 +5,13 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center"
-    android:layout_margin="100dp"
-    android:minWidth="120dp"
-    android:minHeight="120dp"
-    android:background="@drawable/dialog_toast_bg"
+    android:minWidth="60dp"
+    android:minHeight="60dp"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/button2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_height="match_parent"
+        android:text="B" />
 </LinearLayout>
