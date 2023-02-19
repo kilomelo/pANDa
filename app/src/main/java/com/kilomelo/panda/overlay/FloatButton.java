@@ -12,7 +12,10 @@ import com.kilomelo.tools.LogTool;
 
 public class FloatButton extends XToast {
     private static String TAG = FloatButton.class.getSimpleName();
+
+    private static int OPERATION_PANEL_DURATION = 5000;
     private MainActivity mMainActivity;
+    private OperationPanel mOperationPanel;
     enum State
     {
         collapsed,
@@ -60,30 +63,54 @@ public class FloatButton extends XToast {
 
     @Override
     public void cancel() {
-        Log.w(TAG, "do not call cancel on unity floating window, call feeUnity instead");
+        LogTool.logMethod();
+        mMainActivity = null;
+        mDraggable = null;
+        if (null != mOperationPanel) mOperationPanel.cancel();
+        mOperationPanel = null;
+        super.cancel();
     }
     //region business
     private void showOperationPanel(boolean show) {
         LogTool.logMethod();
         if (show) {
-            new OperationPanel(mMainActivity.getApplication()).show();
+            if (null != mOperationPanel)
+            {
+                Log.e(TAG, "mOperationPanel is not null, perhaps mem leak.");
+                return;
+            }
+            mOperationPanel = new OperationPanel(mMainActivity.getApplication());
+            mOperationPanel.setDuration(OPERATION_PANEL_DURATION).setOnToastLifecycle(new OnLifecycle() {
+                @Override
+                public void onDismiss(XToast<?> toast) {
+                    OnLifecycle.super.onDismiss(toast);
+                    mOperationPanel = null;
+                    mDraggable.mEnableDrag = true;
+                }
+            }).show();
             mDraggable.mEnableDrag = false;
         } else {
-            mDraggable.mEnableDrag = true;
+            if (null == mOperationPanel)
+            {
+                Log.e(TAG, "mOperationPanel is null");
+                return;
+            }
+            else {
+                mOperationPanel.cancel();
+                mOperationPanel = null;
+                mDraggable.mEnableDrag = true;
+            }
         }
     }
     public void ToggleOperationPanel()
     {
-        if (mOperationPanel == null)
-        {
-            Log.e(TAG, "mOperationPanel is null");
-            return;
-        }
-        showOperationPanel(!mOperationPanel.isShowing());
+        LogTool.logMethod();
+        showOperationPanel(null == mOperationPanel);
     }
     public void awakeMainWindow()
     {
-        mMainActivity.moveToFront();
+        LogTool.logMethod();
+        if (null == mOperationPanel) mMainActivity.moveToFront();
     }
     //endregion
 }

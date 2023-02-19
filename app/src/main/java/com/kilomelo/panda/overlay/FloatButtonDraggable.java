@@ -1,5 +1,6 @@
 package com.kilomelo.panda.overlay;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -7,11 +8,12 @@ import android.view.View;
 
 import com.hjq.xtoast.XToast;
 import com.hjq.xtoast.draggable.SpringDraggable;
+import com.kilomelo.panda.ConfigHolder;
+import com.kilomelo.panda.MainActivity;
 import com.kilomelo.panda.R;
 import com.kilomelo.tools.LogTool;
-import com.kilomelo.tools.PersistentData;
 
-public class FloatButtonDraggable extends SpringDraggable implements View.OnClickListener, View.OnLongClickListener {
+public class FloatButtonDraggable extends SpringDraggable implements View.OnClickListener, View.OnLongClickListener, ConfigHolder {
     private static String TAG = FloatButtonDraggable.class.getSimpleName();
     public boolean mEnableDrag;
     private static int mX;
@@ -104,7 +106,7 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
     public void deserializeLocation()
     {
         LogTool.logMethod();
-        SharedPreferences sharedPreferences = PersistentData.getInstance().getSharedPreferences();
+        SharedPreferences sharedPreferences = getSharedPreference();
         if (null != sharedPreferences)
         {
             mX = sharedPreferences.getInt("x", 0);
@@ -115,7 +117,7 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
     public void serializeLocation()
     {
         LogTool.logMethod();
-        SharedPreferences sharedPreferences = PersistentData.getInstance().getSharedPreferences();
+        SharedPreferences sharedPreferences = getSharedPreference();
         if (null != sharedPreferences)
         {
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -129,4 +131,8 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
     }
 
 
+    @Override
+    public SharedPreferences getSharedPreference() {
+        return MainActivity.getInstance().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+    }
 }

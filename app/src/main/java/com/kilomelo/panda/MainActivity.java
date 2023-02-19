@@ -20,12 +20,14 @@ import com.hjq.toast.ToastUtils;
 import com.hjq.xtoast.XToast;
 import com.kilomelo.panda.overlay.FloatButton;
 import com.kilomelo.tools.LogTool;
-import com.kilomelo.tools.PersistentData;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static String TAG = MainActivity.class.getSimpleName();
+
+    private static volatile MainActivity mInstance;
+    public static MainActivity getInstance() { return mInstance; }
 
     private FloatButton mFloatButton;
     private int mTaskId;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogTool.logMethod();
-        PersistentData.getInstance().init(this);
+        mInstance = this;
         setContentView(R.layout.activity_main);
 
         TitleBar titleBar = findViewById(R.id.tb_main_bar);
@@ -50,18 +52,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mFloatButton = new FloatButton(getApplication());
         mFloatButton.init(this);
-//        mFloatWindow.setOnClickListener(new XToast.OnClickListener<View>() {
-//            @Override
-//            public void onClick(XToast<?> toast, View view) {
-//                LogTool.logMethod();
-//                moveToFront();
-//            }
-//        });
+
         mTaskId = getTaskId();
     }
     @Override protected void onDestroy()
     {
         LogTool.logMethod();
+        mInstance = null;
         super.onDestroy();
     }
 
