@@ -1,13 +1,16 @@
 package com.kilomelo.panda;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         TitleBar titleBar = findViewById(R.id.tb_main_bar);
-        Context context = this;
         titleBar.setOnTitleBarListener(new OnTitleBarListener() {
             @Override public void onTitleClick(TitleBar titleBar) {
             LogTool.logMethod();
@@ -49,10 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         findViewById(R.id.button).setOnClickListener(this);
-
-        mFloatButton = new FloatButton(getApplication());
-        mFloatButton.init(this);
-
+        findViewById(R.id.button3).setOnClickListener(this);
         mTaskId = getTaskId();
     }
     @Override protected void onDestroy()
@@ -121,13 +120,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int viewId = view.getId();
         if (viewId == R.id.button) {
             Log.d(TAG, "button clicked");
+            if (null != mFloatButton) return;
             XXPermissions.with(this)
                     .permission(Permission.SYSTEM_ALERT_WINDOW)
                     .request(new OnPermissionCallback() {
 
                         @Override
                         public void onGranted(@NonNull List<String> granted, boolean all) {
-                            showGlobalWindow(getApplication());
+                            LogTool.logMethod();
+                            showFloatButton();
                         }
 
                         @Override
@@ -141,39 +142,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     });
         }
+        if (viewId == R.id.button3) {
+            Log.d(TAG, "button3 clicked");
+            if (null == mFloatButton) return;
+            cancelFloatButton();
+        }
     }
 
-    private void showGlobalWindow(Application app)
+    private void showFloatButton()
+    {
+        LogTool.logMethod();
+        if (null != mFloatButton) {
+            Log.e(TAG, "mFloatWindow is not null.");
+            return;
+        }
+        mFloatButton = new FloatButton(getApplication());
+        mFloatButton.show();
+        moveToBackground();
+    }
+
+    private void cancelFloatButton()
     {
         LogTool.logMethod();
         if (null == mFloatButton) {
-            Log.e(TAG, "mFloatWindow not inited.");
+            Log.e(TAG, "mFloatWindow is null.");
             return;
         }
-        mFloatButton.show();
-        moveToBackground();
-//        new XToast<>(app)
-//                .setContentView(R.layout.window_hint)
-//                .setGravity(Gravity.END | Gravity.BOTTOM)
-//                .setYOffset(200)
-//                .setText(android.R.id.message, "全局弹窗")
-//                // 设置指定的拖拽规则
-//                .setDraggable(new SpringDraggable())
-//                .setOnClickListener(android.R.id.icon, new XToast.OnClickListener<ImageView>() {
-//
-//                    @Override
-//                    public void onClick(XToast<?> toast, ImageView view) {
-//                        ToastUtils.show("我被点击了");
-//                        toast.cancel();
-//                        // 点击后跳转到拨打电话界面
-//                        // Intent intent = new Intent(Intent.ACTION_DIAL);
-//                        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        // toast.startActivity(intent);
-//                        // 安卓 10 在后台跳转 Activity 需要额外适配
-//                        // https://developer.android.google.cn/about/versions/10/privacy/changes#background-activity-starts
-//                    }
-//                })
-//                .show();
+        mFloatButton.cancel();
+        mFloatButton = null;
     }
 
     public void moveToFront() {

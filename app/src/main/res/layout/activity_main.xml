@@ -21,7 +21,15 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="pANDa Window" />
+        android:text="Show pANDa" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Hide pANDa" />
 
 
 </LinearLayout>

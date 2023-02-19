@@ -14,7 +14,6 @@ public class FloatButton extends XToast {
     private static String TAG = FloatButton.class.getSimpleName();
 
     private static int OPERATION_PANEL_DURATION = 5000;
-    private MainActivity mMainActivity;
     private OperationPanel mOperationPanel;
     enum State
     {
@@ -27,17 +26,12 @@ public class FloatButton extends XToast {
 
     public FloatButton(Application application) {
         super(application);
+        init();
     }
 
-    public void init(MainActivity mainActivity)
+    private void init()
     {
         LogTool.logMethod();
-        if (null == mainActivity)
-        {
-            Log.e(TAG, "mainActivity is null");
-            return;
-        }
-        mMainActivity = mainActivity;
         setContentView(R.layout.float_button);
 
         setGravity(Gravity.TOP | Gravity.START);
@@ -64,7 +58,6 @@ public class FloatButton extends XToast {
     @Override
     public void cancel() {
         LogTool.logMethod();
-        mMainActivity = null;
         mDraggable = null;
         if (null != mOperationPanel) mOperationPanel.cancel();
         mOperationPanel = null;
@@ -79,7 +72,7 @@ public class FloatButton extends XToast {
                 Log.e(TAG, "mOperationPanel is not null, perhaps mem leak.");
                 return;
             }
-            mOperationPanel = new OperationPanel(mMainActivity.getApplication());
+            mOperationPanel = new OperationPanel(MainActivity.getInstance().getApplication());
             mOperationPanel.setDuration(OPERATION_PANEL_DURATION).setOnToastLifecycle(new OnLifecycle() {
                 @Override
                 public void onDismiss(XToast<?> toast) {
@@ -110,7 +103,7 @@ public class FloatButton extends XToast {
     public void awakeMainWindow()
     {
         LogTool.logMethod();
-        if (null == mOperationPanel) mMainActivity.moveToFront();
+        if (null == mOperationPanel) MainActivity.getInstance().moveToFront();
     }
     //endregion
 }
