@@ -70,12 +70,14 @@ public class LoadingView extends ImageView {
     }
 
     private void startAnimation() {
+        Log.d("LoadingView", "startAnimation");
         if (mLoadingDrawable != null) {
             mLoadingDrawable.start();
         }
     }
 
     private void stopAnimation() {
+        Log.d("LoadingView", "stopAnimation");
         if (mLoadingDrawable != null) {
             mLoadingDrawable.stop();
         }
