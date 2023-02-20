@@ -19,7 +19,6 @@ import app.dinus.com.loadingdrawable.render.LoadingRenderer;
 
 public class SplashActivity extends AppCompatActivity implements Runnable {
     private static String TAG = SplashActivity.class.getSimpleName();
-    private static final Handler HANDLER = new Handler(Looper.getMainLooper());
 
     private boolean mMainActivityStarted = false;
     private long mLatestFinishTime;
@@ -55,9 +54,9 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
         if (null != loadingRenderer) {
             safeFinishTime += loadingRenderer.getDuration() + 1;
         }
-        HANDLER.removeCallbacksAndMessages(this);
+        MainActivity.HANDLER.removeCallbacksAndMessages(this);
         Log.d(TAG, "set delay action");
-        HANDLER.postAtTime(this, safeFinishTime);
+        MainActivity.HANDLER.postAtTime(this, safeFinishTime);
         mLatestFinishTime = safeFinishTime;
     }
 
@@ -86,7 +85,7 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
         }
         mMainActivityStarted = true;
         // 不知道为什么不管用
-        HANDLER.removeCallbacksAndMessages(this);
+        MainActivity.HANDLER.removeCallbacksAndMessages(this);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

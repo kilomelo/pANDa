@@ -10,6 +10,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +30,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static String TAG = MainActivity.class.getSimpleName();
+    public static final Handler HANDLER = new Handler(Looper.getMainLooper());
 
     private static volatile MainActivity mInstance;
     public static MainActivity getInstance() { return mInstance; }
@@ -158,7 +161,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         mFloatButton = new FloatButton(getApplication());
         mFloatButton.show();
-        moveToBackground();
+        HANDLER.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                moveToBackground();
+            }
+        }, 1);
     }
 
     private void cancelFloatButton()
