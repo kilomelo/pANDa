@@ -63,6 +63,8 @@ public abstract class LoadingRenderer {
         setupAnimators();
     }
 
+    public long getDuration() { return mDuration; }
+
     public void setCompleteCallback(Function callback)
     {
         mOnComplete = callback;
@@ -89,11 +91,19 @@ public abstract class LoadingRenderer {
     }
 
     void start() {
+        if (isRunning()) return;
+        reset();
+        Log.d("LoadingRenderer", "start");
+        mRenderAnimator.addUpdateListener(mAnimatorUpdateListener);
+        mRenderAnimator.addListener(mAnimatorListener);
         mRenderAnimator.setDuration(mDuration);
         mRenderAnimator.start();
+
     }
 
     void stop() {
+        if (!isRunning()) return;
+        Log.d("LoadingRenderer", "stop");
         mRenderAnimator.removeUpdateListener(mAnimatorUpdateListener);
         mRenderAnimator.removeListener(mAnimatorListener);
         mRenderAnimator.end();
@@ -124,8 +134,8 @@ public abstract class LoadingRenderer {
         mRenderAnimator.setRepeatCount(mLoop ? ValueAnimator.INFINITE : 0);
         mRenderAnimator.setRepeatMode(ValueAnimator.RESTART);
         mRenderAnimator.setInterpolator(new LinearInterpolator());
-        mRenderAnimator.addUpdateListener(mAnimatorUpdateListener);
-        mRenderAnimator.addListener(mAnimatorListener);
+//        mRenderAnimator.addUpdateListener(mAnimatorUpdateListener);
+//        mRenderAnimator.addListener(mAnimatorListener);
 
     }
 
