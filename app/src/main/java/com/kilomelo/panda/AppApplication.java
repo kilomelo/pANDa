@@ -1,7 +1,7 @@
 package com.kilomelo.panda;
 
 import android.app.Application;
-import com.hjq.toast.ToastUtils;
+import com.hjq.toast.Toaster;
 import com.kilomelo.tools.LogTool;
 
 public final class AppApplication extends android.app.Application {
@@ -10,6 +10,6 @@ public final class AppApplication extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         LogTool.logMethod();
-        ToastUtils.init(this);
+        Toaster.init(this);
     }
 }

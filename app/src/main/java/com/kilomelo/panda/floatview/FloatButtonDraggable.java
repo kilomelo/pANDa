@@ -1,4 +1,4 @@
-package com.kilomelo.panda.overlay;
+package com.kilomelo.panda.floatview;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,31 +17,16 @@ import com.kilomelo.tools.LogTool;
 public class FloatButtonDraggable extends SpringDraggable implements View.OnClickListener, View.OnLongClickListener, ConfigHolder {
     private static String TAG = FloatButtonDraggable.class.getSimpleName();
     public boolean mEnableDrag;
-//    private static int mX;
-//    private static int mY;
-//    private FloatButton mFloatButton;
 
     public FloatButtonDraggable() {
         super();
         mEnableDrag = true;
     }
-//    @Override
-//    protected void updateLocation(int x, int y) {
-//        super.updateLocation(x, y);
-//        mX = x;
-//        mY = y;
-//    }
 
     @Override
     public void start(XToast<?> toast) {
         super.start(toast);
         LogTool.logMethod();
-//        mFloatButton = (FloatButton)getXToast();
-//        if (null == mFloatButton)
-//        {
-//            Log.e(TAG, "toast is not FloatBtn");
-//            return;
-//        }
         View view = toast.getDecorView();
         View btn = view.findViewById(R.id.button2);
         if (null == btn) Log.e(TAG, "btn is null");
@@ -50,7 +35,7 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
             btn.setOnLongClickListener(this);
         }
 
-//        deserializeLocation();
+        deserializeLocation();
     }
 
     @Override
@@ -64,7 +49,7 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-//                    serializeLocation();
+                    serializeLocation();
                     break;
                 default:
                     break;
@@ -83,7 +68,7 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
             if (null == floatButton) {
                 Log.e(TAG, "floatButton is null");
             }
-            floatButton.ToggleOperationPanel();
+            else floatButton.ToggleOperationPanel();
         }
     }
 
@@ -97,17 +82,12 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
             if (null == floatButton) {
                 Log.e(TAG, "floatButton is null");
             }
-            floatButton.awakeMainWindow();
+            else floatButton.awakeMainWindow();
             return true;
         }
         return false;
     }
 
-//    public void relocate()
-//    {
-//        LogTool.logMethod();
-//        updateLocation(mX, mY);
-//    }
     private void deserializeLocation()
     {
         LogTool.logMethod();
@@ -135,7 +115,7 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
                 Log.d(TAG, "serialize Location to sharedPreferences, x: " + params.x + " y: " + params.y);
                 editor.putInt("x", params.x);
                 editor.putInt("y", params.y);
-                editor.commit();
+                editor.apply();
             }
         }
     }

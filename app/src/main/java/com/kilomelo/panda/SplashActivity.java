@@ -27,7 +27,6 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
         super.onCreate(savedInstanceState);
         LogTool.logMethod();
         setContentView(R.layout.activity_splash);
-        Context context = this;
 
         LoadingView loadingView = findViewById(R.id.day_night_view);
         LoadingRenderer loadingRenderer = loadingView.getLoadingRenderer();

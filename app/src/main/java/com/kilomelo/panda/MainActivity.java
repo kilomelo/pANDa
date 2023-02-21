@@ -1,18 +1,14 @@
 package com.kilomelo.panda;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityManager;
-import android.app.Application;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -21,15 +17,15 @@ import com.hjq.bar.TitleBar;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
-import com.hjq.toast.ToastUtils;
+import com.hjq.toast.Toaster;
 import com.hjq.xtoast.XToast;
-import com.kilomelo.panda.overlay.FloatButton;
+import com.kilomelo.panda.floatview.FloatButton;
 import com.kilomelo.tools.LogTool;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private static String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
     public static final Handler HANDLER = new Handler(Looper.getMainLooper());
 
     private static volatile MainActivity mInstance;
@@ -49,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         titleBar.setOnTitleBarListener(new OnTitleBarListener() {
             @Override public void onTitleClick(TitleBar titleBar) {
             LogTool.logMethod();
-            ToastUtils.show("Hello pANDa.");
+            Toaster.show("Hello pANDa.");
             }
         });
 
@@ -123,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int viewId = view.getId();
         if (viewId == R.id.button) {
             Log.d(TAG, "button clicked");
-            if (null != mFloatButton) return;
+            if (null != mFloatButton && mFloatButton.isShowing()) return;
             XXPermissions.with(this)
                     .permission(Permission.SYSTEM_ALERT_WINDOW)
                     .request(new OnPermissionCallback() {
@@ -147,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (viewId == R.id.button3) {
             Log.d(TAG, "button3 clicked");
-            if (null == mFloatButton) return;
             cancelFloatButton();
         }
     }
@@ -155,12 +150,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void showFloatButton()
     {
         LogTool.logMethod();
-        if (null != mFloatButton) {
-            Log.e(TAG, "mFloatWindow is not null.");
-            return;
+        if (null == mFloatButton) {
+            mFloatButton = new FloatButton(getApplication());
         }
-        mFloatButton = new FloatButton(getApplication());
+        if (mFloatButton.isShowing()) return;
         mFloatButton.show();
+        // 首次获得权限，直接调用不生效
         HANDLER.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -176,8 +171,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.e(TAG, "mFloatWindow is null.");
             return;
         }
+        if (!mFloatButton.isShowing()) return;
         mFloatButton.cancel();
-        mFloatButton = null;
     }
 
     public void moveToFront() {

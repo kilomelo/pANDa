@@ -1,4 +1,4 @@
-package com.kilomelo.panda.overlay;
+package com.kilomelo.panda.floatview;
 
 import android.app.Application;
 
@@ -13,6 +13,5 @@ public class OperationPanel extends XToast {
         super(application);
         LogTool.logMethod();
         setContentView(R.layout.operation_panel);
-
     }
 }
