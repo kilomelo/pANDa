@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
         LogTool.logMethod();
         setContentView(R.layout.activity_splash);
 
-        LoadingView loadingView = findViewById(R.id.day_night_view);
+        LoadingView loadingView = findViewById(R.id.gear_view);
         LoadingRenderer loadingRenderer = loadingView.getLoadingRenderer();
         if (null != loadingRenderer) {
             mLatestFinishTime = SystemClock.uptimeMillis() + loadingRenderer.getDuration();
@@ -48,7 +48,7 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
         super.onResume();
         LogTool.logMethod();
         long safeFinishTime = SystemClock.uptimeMillis();
-        LoadingView loadingView = findViewById(R.id.day_night_view);
+        LoadingView loadingView = findViewById(R.id.gear_view);
         LoadingRenderer loadingRenderer = loadingView.getLoadingRenderer();
         if (null != loadingRenderer) {
             safeFinishTime += loadingRenderer.getDuration() + 1;
@@ -77,7 +77,7 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
             Log.d(TAG, "too early to finish, now: " + now + " expectedFinishTime: " + mLatestFinishTime);
             return;
         }
-        LoadingView loadingView = findViewById(R.id.day_night_view);
+        LoadingView loadingView = findViewById(R.id.gear_view);
         LoadingRenderer loadingRenderer = loadingView.getLoadingRenderer();
         if (null != loadingRenderer) {
             loadingRenderer.setCompleteCallback(null);

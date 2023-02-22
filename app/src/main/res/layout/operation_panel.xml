@@ -22,21 +22,24 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/operation_btn_temp" />
+            android:background="@drawable/operation_btn_temp"
+            app:srcCompat="@null" />
 
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/operation_btn_temp" />
+            android:background="@drawable/operation_btn_temp"
+            app:srcCompat="@null" />
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/operation_btn_temp" />
+            android:background="@drawable/operation_btn_temp"
+            app:srcCompat="@null" />
 
     </LinearLayout>
 
@@ -50,47 +53,52 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/operation_btn_temp" />
+            android:background="@drawable/operation_btn_temp"
+            app:srcCompat="@null" />
 
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/operation_btn_temp" />
+            android:background="@drawable/operation_btn_temp"
+            app:srcCompat="@null" />
 
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/operation_btn_temp" />
+            android:background="@drawable/operation_btn_temp"
+            app:srcCompat="@null" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imageView6"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/operation_btn_temp" />
+            android:background="@drawable/operation_btn_temp"
+            app:srcCompat="@null" />
 
         <ImageView
             android:id="@+id/imageView7"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/operation_btn_temp" />
+            android:background="@drawable/operation_btn_temp"
+            app:srcCompat="@null" />
 
         <ImageView
             android:id="@+id/imageView8"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/operation_btn_temp" />
+            android:background="@drawable/operation_btn_temp"
+            app:srcCompat="@null" />
     </LinearLayout>
 </LinearLayout>

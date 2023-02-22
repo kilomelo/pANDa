@@ -7,11 +7,19 @@
     android:layout_gravity="center"
     tools:context=".MainActivity">
 
+<!--    <app.dinus.com.loadingdrawable.LoadingView-->
+<!--        android:id="@+id/day_night_view"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_weight="1"-->
+<!--        android:background="@color/colorPrimaryDark"-->
+<!--        app:loading_renderer="DayNightLoadingRenderer" />-->
+
     <app.dinus.com.loadingdrawable.LoadingView
-        android:id="@+id/day_night_view"
+        android:id="@+id/gear_view"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@color/colorPrimaryDark"
-        app:loading_renderer="DayNightLoadingRenderer" />
+        app:loading_renderer="GearLoadingRenderer"/>
 </LinearLayout>
