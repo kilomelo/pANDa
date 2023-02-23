@@ -92,7 +92,7 @@ public class FloatButton extends XToast {
     public void awakeMainWindow()
     {
         LogTool.logMethod();
-        if (null == mOperationPanel || mOperationPanel.isShowing()) {
+        if (null == mOperationPanel || !mOperationPanel.isShowing()) {
             MainActivity.getInstance().moveToFront();
         }
     }

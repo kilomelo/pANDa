@@ -28,11 +28,11 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
         super.start(toast);
         LogTool.logMethod();
         View view = toast.getDecorView();
-        View btn = view.findViewById(R.id.button2);
-        if (null == btn) Log.e(TAG, "btn is null");
+        View fab = view.findViewById(R.id.float_btn);
+        if (null == fab) Log.e(TAG, "fab is null");
         else {
-            btn.setOnClickListener(this);
-            btn.setOnLongClickListener(this);
+            fab.setOnClickListener(this);
+            fab.setOnLongClickListener(this);
         }
 
         deserializeLocation();
@@ -62,8 +62,8 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
     public void onClick(View view) {
         LogTool.logMethod();
         int viewId = view.getId();
-        if (viewId == R.id.button2) {
-            Log.d(TAG, "button2 clicked");
+        if (viewId == R.id.float_btn) {
+            Log.d(TAG, "float_btn clicked");
             FloatButton floatButton = (FloatButton)getXToast();
             if (null == floatButton) {
                 Log.e(TAG, "floatButton is null");
@@ -76,8 +76,8 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
     public boolean onLongClick(View view) {
         LogTool.logMethod();
         int viewId = view.getId();
-        if (viewId == R.id.button2) {
-            Log.d(TAG, "button2 long clicked");
+        if (viewId == R.id.float_btn) {
+            Log.d(TAG, "float_btn long clicked");
             FloatButton floatButton = (FloatButton)getXToast();
             if (null == floatButton) {
                 Log.e(TAG, "floatButton is null");
