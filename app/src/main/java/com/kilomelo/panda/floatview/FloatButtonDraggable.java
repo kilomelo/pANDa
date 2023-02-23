@@ -14,7 +14,7 @@ import com.kilomelo.panda.MainActivity;
 import com.kilomelo.panda.R;
 import com.kilomelo.tools.LogTool;
 
-public class FloatButtonDraggable extends SpringDraggable implements View.OnClickListener, View.OnLongClickListener, ConfigHolder {
+public class FloatButtonDraggable extends SpringDraggable implements View.OnClickListener, ConfigHolder {
     private static String TAG = FloatButtonDraggable.class.getSimpleName();
     public boolean mEnableDrag;
 
@@ -32,7 +32,6 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
         if (null == fab) Log.e(TAG, "fab is null");
         else {
             fab.setOnClickListener(this);
-            fab.setOnLongClickListener(this);
         }
 
         deserializeLocation();
@@ -70,22 +69,6 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
             }
             else floatButton.ToggleOperationPanel();
         }
-    }
-
-    @Override
-    public boolean onLongClick(View view) {
-        LogTool.logMethod();
-        int viewId = view.getId();
-        if (viewId == R.id.float_btn) {
-            Log.d(TAG, "float_btn long clicked");
-            FloatButton floatButton = (FloatButton)getXToast();
-            if (null == floatButton) {
-                Log.e(TAG, "floatButton is null");
-            }
-            else floatButton.awakeMainWindow();
-            return true;
-        }
-        return false;
     }
 
     private void deserializeLocation()
