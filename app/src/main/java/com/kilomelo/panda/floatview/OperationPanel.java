@@ -12,6 +12,6 @@ public class OperationPanel extends XToast {
     public OperationPanel(Application application) {
         super(application);
         LogTool.logMethod();
-        setContentView(R.layout.ope_panel);
+        setContentView(R.layout.operation_panel);
     }
 }

@@ -16,5 +16,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "pANDa"
 include ':app'
-include ':library'
+include ':loadingdrawable'
 include ':fab'
+include ':circleactionmenu'

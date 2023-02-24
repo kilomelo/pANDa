@@ -15,6 +15,28 @@
         app:leftIcon="@null"
         app:title="@string/app_name" />
 
+    <com.kilomelo.circleactionmenu.CircleActionMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        >
+
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/fab_bg_normal" />
+
+        <ImageView
+            android:id="@+id/imageView99"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            tools:srcCompat="@drawable/fab_bg_normal" />
+
+
+    </com.kilomelo.circleactionmenu.CircleActionMenu>
+
     <Button
         android:id="@+id/button"
         android:layout_margin="10dp"

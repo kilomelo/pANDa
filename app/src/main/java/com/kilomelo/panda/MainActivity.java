@@ -39,18 +39,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         LogTool.logMethod();
         mInstance = this;
-        setContentView(R.layout.ope_panel);
+        setContentView(R.layout.activity_main);
 
-//        TitleBar titleBar = findViewById(R.id.tb_main_bar);
-//        titleBar.setOnTitleBarListener(new OnTitleBarListener() {
-//            @Override public void onTitleClick(TitleBar titleBar) {
-//            LogTool.logMethod();
-//            Toaster.show("Hello pANDa.");
-//            }
-//        });
-//
-//        findViewById(R.id.button).setOnClickListener(this);
-//        findViewById(R.id.button3).setOnClickListener(this);
+        TitleBar titleBar = findViewById(R.id.tb_main_bar);
+        titleBar.setOnTitleBarListener(new OnTitleBarListener() {
+            @Override public void onTitleClick(TitleBar titleBar) {
+            LogTool.logMethod();
+            Toaster.show("Hello pANDa.");
+            }
+        });
+
+        findViewById(R.id.button).setOnClickListener(this);
+        findViewById(R.id.button3).setOnClickListener(this);
         mTaskId = getTaskId();
     }
     @Override protected void onDestroy()
