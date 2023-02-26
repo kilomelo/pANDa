@@ -6,13 +6,26 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.kilomelo.tools.LogTool;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CircleActionMenu extends ViewGroup {
     private static final String TAG = CircleActionMenu.class.getSimpleName();
 
-    private int x = 20;
-    private int y = 50;
+
+
+    private float mCenterX;
+    private float mCenterY;
+    private float mRadius = 500;
+    private float mPrimaryBtnAngle = 0;
+    private float mAngleInterval = 25;
+    private List<Float> mX;
+    private List<Float> mY;
 
     public CircleActionMenu(Context context) {
         super(context);
@@ -30,43 +43,82 @@ public class CircleActionMenu extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         LogTool.logMethod("widthMeasureSpec: " + widthMeasureSpec + " heightMeasureSpec: " + heightMeasureSpec);
         measureChildren(widthMeasureSpec, heightMeasureSpec);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int width = 0;
-        int height = 0;
+        if (null == mX) mX = new ArrayList<>();
+        if (null == mY) mY = new ArrayList<>();
+
+        mX.clear();
+        mY.clear();
+
+        float xMin = 0;
+        float xMax = 0;
+        float yMin = 0;
+        float yMax = 0;
+
+        float angle = mPrimaryBtnAngle;
+        if (angle < 0) angle = 0;
+        if (angle > 90) angle = 90;
 
         int childCnt = getChildCount();
         for (int i = 0; i < childCnt; i++)
         {
             View child = getChildAt(i);
             if (child.getVisibility() == GONE) continue;
-            measureChild(child, widthMeasureSpec, heightMeasureSpec);
-            Log.d(TAG, "child " + i + " childWidth: " + child.getMeasuredWidth() + " childHeight: " + child.getMeasuredHeight());
-            width += child.getMeasuredWidth() + x;
-            height = Math.max(height, child.getMeasuredHeight() + y * i);
-        }
-        width -= x;
+            int childW = child.getMeasuredWidth();
+            int childH = child.getMeasuredHeight();
+            double radians = Math.toRadians(angle);
+            float centerX = mRadius * (float)Math.sin(radians);
+            float centerY = -mRadius * (float)Math.cos(radians);
+            Log.d(TAG, "child " + i + " childWidth: " + childW + " childHeight: " + childH + " x: " + centerX + " y: " + centerY + " angle: " + angle);
+            mX.add(centerX);
+            mY.add(centerY);
+            angle += mAngleInterval;
 
-        Log.d(TAG, "w: " + width + " h: " + height);
-        setMeasuredDimension(width, height);
+            if (0 == i) {
+                xMin = centerX - childW * 0.5f;
+                xMax = centerX + childW * 0.5f;
+                yMin = centerY - childH * 0.5f;
+                yMax = centerY + childH * 0.5f;
+            }
+            else {
+                xMin = Math.min(xMin, centerX - childW * 0.5f);
+                xMax = Math.max(xMax, centerX + childW * 0.5f);
+                yMin = Math.min(yMin, centerY - childH * 0.5f);
+                yMax = Math.max(yMax, centerY + childH * 0.5f);
+            }
+            Log.d(TAG, "xMin: " + xMin + " xMax: " + xMax + " yMin: " + yMin + " yMax: " + yMax + " width: " + (int)(xMax - xMin) + " height: " + (int)(yMax - yMin));
+        }
+        setMeasuredDimension((int)(xMax - xMin), (int)(yMax - yMin));
     }
 
     @Override
-    protected void onLayout(boolean b, int i, int i1, int i2, int i3) {
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
         LogTool.logMethod();
-        int left = 0;
-        int top = 0;
+        int offsetX = 0;
+        int offsetY = 0;
         int childCnt = getChildCount();
-        for (int idx = 0; idx < childCnt; idx++)
+        for (int i = 0; i < childCnt; i++)
         {
-            View child = getChildAt(idx);
+            View child = getChildAt(i);
             if (child.getVisibility() == GONE) continue;
-            int r = left + child.getMeasuredWidth();
-            int bo = top + child.getMeasuredHeight();
-            child.layout(left, top, r, bo);
-            Log.d(TAG, "child " + idx + " l: " + left + " top: " + top + " right: " + r + " bottom: " + bo);
-            left += x + child.getMeasuredHeight();
-            top += y;
+            int childW = child.getMeasuredWidth();
+            int childH = child.getMeasuredHeight();
+            int x = Math.round(mX.get(i));
+            int y = Math.round(mY.get(i));
+            Log.d(TAG, "child " + i + " x: " + x + " y: " + y + " childW: " + childW + " childH: " + childH);
+            if (0 == i) {
+                offsetX = -(int)(x - childW * 0.5f);
+                offsetY = -(int)(y - childH * 0.5f);
+                Log.d(TAG, "set offset to " + offsetX + " / " + offsetY);
+            }
+            x += offsetX;
+            y += offsetY;
+            int left = x - childW / 2;
+            int top = y - childH / 2;
+            int right = x + childW / 2;
+            int bottom = y + childH / 2;
+            child.layout(left, top, right, bottom);
+            Log.d(TAG, "child " + i + " l: " + left + " t: " + top + " r: " + right + " b: " + bottom);
         }
     }
 }
