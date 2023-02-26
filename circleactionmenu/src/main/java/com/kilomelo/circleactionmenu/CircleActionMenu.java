@@ -17,8 +17,11 @@ import java.util.List;
 public class CircleActionMenu extends ViewGroup {
     private static final String TAG = CircleActionMenu.class.getSimpleName();
 
+    public static final int EXPAND_LEFT = 0;
+    public static final int EXPAND_RIGHT = 1;
 
-
+    private int mExpandDirection;
+    private boolean mExpanded;
     private float mCenterX;
     private float mCenterY;
     private float mRadius = 500;
@@ -93,7 +96,7 @@ public class CircleActionMenu extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        LogTool.logMethod();
+        LogTool.logMethod("changed: " + changed + " l: " + l + " t: " + t + " r: " + r + " b: " + b);
         int offsetX = 0;
         int offsetY = 0;
         int childCnt = getChildCount();
@@ -114,9 +117,12 @@ public class CircleActionMenu extends ViewGroup {
             x += offsetX;
             y += offsetY;
             int left = x - childW / 2;
+            if (mExpandDirection == EXPAND_LEFT) {
+                left = r - l - left - childW;
+            }
             int top = y - childH / 2;
-            int right = x + childW / 2;
-            int bottom = y + childH / 2;
+            int right = left + childW;
+            int bottom = top + childH;
             child.layout(left, top, right, bottom);
             Log.d(TAG, "child " + i + " l: " + left + " t: " + top + " r: " + right + " b: " + bottom);
         }
