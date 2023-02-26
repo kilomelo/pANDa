@@ -28,11 +28,11 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
         super.start(toast);
         LogTool.logMethod();
         View view = toast.getDecorView();
-        View fab = view.findViewById(R.id.float_btn);
-        if (null == fab) Log.e(TAG, "fab is null");
-        else {
-            fab.setOnClickListener(this);
-        }
+//        View fab = view.findViewById(R.id.float_btn);
+//        if (null == fab) Log.e(TAG, "fab is null");
+//        else {
+//            fab.setOnClickListener(this);
+//        }
 
         deserializeLocation();
     }
@@ -61,14 +61,14 @@ public class FloatButtonDraggable extends SpringDraggable implements View.OnClic
     public void onClick(View view) {
         LogTool.logMethod();
         int viewId = view.getId();
-        if (viewId == R.id.float_btn) {
-            Log.d(TAG, "float_btn clicked");
-            FloatButton floatButton = (FloatButton)getXToast();
-            if (null == floatButton) {
-                Log.e(TAG, "floatButton is null");
-            }
-            else floatButton.ToggleOperationPanel();
-        }
+//        if (viewId == R.id.float_btn) {
+//            Log.d(TAG, "float_btn clicked");
+//            FloatButton floatButton = (FloatButton)getXToast();
+//            if (null == floatButton) {
+//                Log.e(TAG, "floatButton is null");
+//            }
+//            else floatButton.ToggleOperationPanel();
+//        }
     }
 
     private void deserializeLocation()

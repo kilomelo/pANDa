@@ -33,7 +33,7 @@ public class FloatButton extends XToast {
         LogTool.logMethod();
         setContentView(R.layout.float_button);
 
-        setGravity(Gravity.TOP | Gravity.START);
+        setGravity(Gravity.TOP | Gravity.END);
         // 设置指定的拖拽规则
         mDraggable = new FloatButtonDraggable();
         setDraggable(mDraggable);
