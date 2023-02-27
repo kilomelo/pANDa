@@ -1,10 +1,17 @@
 package com.kilomelo.circleactionmenu;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,9 +26,13 @@ public class CircleActionMenu extends ViewGroup {
 
     public static final int EXPAND_LEFT = 0;
     public static final int EXPAND_RIGHT = 1;
+    private static final int ANIMATION_DURATION = 300;
 
     private int mExpandDirection;
     private boolean mExpanded;
+    private AnimatorSet mExpandAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
+    private AnimatorSet mCollapseAnimation = new AnimatorSet().setDuration(ANIMATION_DURATION);
+
     private float mCenterX;
     private float mCenterY;
     private float mRadius = 500;
@@ -125,6 +136,129 @@ public class CircleActionMenu extends ViewGroup {
             int bottom = top + childH;
             child.layout(left, top, right, bottom);
             Log.d(TAG, "child " + i + " l: " + left + " t: " + top + " r: " + right + " b: " + bottom);
+        }
+    }
+
+    // region collapse expand
+    public void collapse() {
+        collapse(false);
+    }
+
+    public void collapseImmediately() {
+        collapse(true);
+    }
+
+    private void collapse(boolean immediately) {
+        if (mExpanded) {
+            mExpanded = false;
+//            mTouchDelegateGroup.setEnabled(false);
+            mCollapseAnimation.setDuration(immediately ? 0 : ANIMATION_DURATION);
+            mCollapseAnimation.start();
+            mExpandAnimation.cancel();
+
+//            if (mListener != null) {
+//                mListener.onMenuCollapsed();
+//            }
+        }
+    }
+
+    public void toggle() {
+        if (mExpanded) {
+            collapse();
+        } else {
+            expand();
+        }
+    }
+
+    public void expand() {
+        if (!mExpanded) {
+            mExpanded = true;
+//            mTouchDelegateGroup.setEnabled(true);
+            mCollapseAnimation.cancel();
+            mExpandAnimation.start();
+
+//            if (mListener != null) {
+//                mListener.onMenuExpanded();
+//            }
+        }
+    }
+
+    public boolean isExpanded() {
+        return mExpanded;
+    }
+    // endregion
+
+    private class LayoutParams extends ViewGroup.LayoutParams {
+
+        private ObjectAnimator mExpandDir = new ObjectAnimator();
+        private ObjectAnimator mExpandAlpha = new ObjectAnimator();
+        private ObjectAnimator mCollapseDir = new ObjectAnimator();
+        private ObjectAnimator mCollapseAlpha = new ObjectAnimator();
+        private boolean animationsSetToPlay;
+
+        private Interpolator sExpandInterpolator = new OvershootInterpolator();
+        private Interpolator sCollapseInterpolator = new DecelerateInterpolator(3f);
+        private Interpolator sAlphaExpandInterpolator = new DecelerateInterpolator();
+
+        public LayoutParams(ViewGroup.LayoutParams source) {
+            super(source);
+
+            mExpandDir.setInterpolator(sExpandInterpolator);
+            mExpandAlpha.setInterpolator(sAlphaExpandInterpolator);
+            mCollapseDir.setInterpolator(sCollapseInterpolator);
+            mCollapseAlpha.setInterpolator(sCollapseInterpolator);
+
+            mCollapseAlpha.setProperty(View.ALPHA);
+            mCollapseAlpha.setFloatValues(1f, 0f);
+
+            mExpandAlpha.setProperty(View.ALPHA);
+            mExpandAlpha.setFloatValues(0f, 1f);
+
+            switch (mExpandDirection) {
+//                case EXPAND_UP:
+//                case EXPAND_DOWN:
+//                    mCollapseDir.setProperty(View.TRANSLATION_Y);
+//                    mExpandDir.setProperty(View.TRANSLATION_Y);
+//                    break;
+//                case EXPAND_LEFT:
+//                case EXPAND_RIGHT:
+//                    mCollapseDir.setProperty(View.TRANSLATION_X);
+//                    mExpandDir.setProperty(View.TRANSLATION_X);
+//                    break;
+            }
+        }
+
+        public void setAnimationsTarget(View view) {
+            mCollapseAlpha.setTarget(view);
+            mCollapseDir.setTarget(view);
+            mExpandAlpha.setTarget(view);
+            mExpandDir.setTarget(view);
+
+            // Now that the animations have targets, set them to be played
+            if (!animationsSetToPlay) {
+                addLayerTypeListener(mExpandDir, view);
+                addLayerTypeListener(mCollapseDir, view);
+
+                mCollapseAnimation.play(mCollapseAlpha);
+                mCollapseAnimation.play(mCollapseDir);
+                mExpandAnimation.play(mExpandAlpha);
+                mExpandAnimation.play(mExpandDir);
+                animationsSetToPlay = true;
+            }
+        }
+
+        private void addLayerTypeListener(Animator animator, final View view) {
+            animator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    view.setLayerType(LAYER_TYPE_NONE, null);
+                }
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    view.setLayerType(LAYER_TYPE_HARDWARE, null);
+                }
+            });
         }
     }
 }
